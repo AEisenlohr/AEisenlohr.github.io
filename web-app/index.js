@@ -1,5 +1,5 @@
 var name = 'PizzaSquat';
-var communityMirrorServiceUUID = '13333333-3333-3333-3333-333333333337';
+var communityMirrorServiceUUID = '13333333333333333333333333333337';
 var characteristics = { 
   idrequest: '13333333-3333-3333-3333-333333330001',
   username: '13333333-3333-3333-3333-333333330002',
@@ -69,7 +69,7 @@ var readyUsername = function(username) {
   var tempBuff = new Uint8Array(username.length);
   const encoder = new TextEncoder('utf-8');
   const temp = encoder.encode(username);
-  return usernameCharacteristic.writeValue(temp);
+  return usernameCharacteristic.;
 };
 
 var readyPassword = function(password) {
