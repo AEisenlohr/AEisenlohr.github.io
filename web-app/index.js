@@ -51,7 +51,7 @@ var readyOven = function() {
     });
 
   }).catch(function(err) {
-    alert('oven (bluetooth) error');
+    alert('communitymirror (bluetooth) error');
     throw err;
   });
 };
