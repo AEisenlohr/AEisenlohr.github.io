@@ -74,9 +74,6 @@ var readyPassword = function(password) {
   var usernameCharacteristic = cachedCharacteristics['password'];
   if(usernameCharacteristic == null) throw new Error('cant find passwordcharacterisitic');
 
-  enc = new TextEncoder();
-
-  return usernameCharacteristic.writeValue(enc.encode(password.textContent));
 };
 // get values from dom
 var getIDReq = function() {
@@ -85,8 +82,6 @@ var getIDReq = function() {
 };
 
 var getUsername = function() {
-  enc = new TextEncoder();
-  return enc.encode(username.textContent);
 };
 
 var getPassword = function() {
