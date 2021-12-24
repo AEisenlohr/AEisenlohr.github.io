@@ -66,7 +66,7 @@ var readyUsername = function(username) {
   var usernameCharacteristic = cachedCharacteristics['username'];
   if(usernameCharacteristic == null) throw new Error('cant find usernamecharacterisitic!');
 
-  var tempBuff = new Uint16Array([swap16(username)]);
+  var tempBuff = new Uint16Array([swap16('Alex')]);
   return usernameCharacteristic.writeValue(tempBuff);
 };
 
@@ -74,7 +74,7 @@ var readyPassword = function(password) {
   var usernameCharacteristic = cachedCharacteristics['password'];
   if(usernameCharacteristic == null) throw new Error('cant find passwordcharacterisitic');
 
-  var tempBuff = new Uint16Array([swap16(password)]);
+  var tempBuff = new Uint16Array([swap16('testpassword')]);
   return usernameCharacteristic.writeValue(tempBuff);
 };
 // get values from dom
