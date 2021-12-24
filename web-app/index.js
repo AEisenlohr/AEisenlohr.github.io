@@ -3,7 +3,7 @@ var communityMirrorServiceUUID = '13333333-3333-3333-3333-333333333337';
 var characteristics = { 
   idrequest: '13333333-3333-3333-3333-333333330001',
   username: '13333333-3333-3333-3333-333333330002',
-  password: '13333333-3333-3333-3333-333333330003'
+  password: '13333333-3333-3333-3333-333333330003' 
 };
 var PizzaBakeResult = {
   HALF_BAKED: 0,
@@ -28,7 +28,7 @@ function swap16(val) {
 var cachedCharacteristics = {};
 
 // current bluetooth connection obj
-var ovenServer = null;
+var communityMirrorServer = null;
 
 // connect to bluetooth peripheral
 var readyOven = function() {
@@ -39,7 +39,7 @@ var readyOven = function() {
     return device.gatt.connect();
 
   }).then(function(server) {
-    ovenServer = server;
+    communityMirrorServer = server;
     return server.getPrimaryService(communityMirrorServiceUUID);
 
   }).then(function(service) {
@@ -122,7 +122,7 @@ var getOvenTemperature = function() {
 
 // button listeners
 var onStartButtonClick = function(e) {
-  if(ovenServer != null && ovenServer.connected) {
+  if(communityMirrorServer != null && communityMirrorServer.connected) {
     alert('Already connected...');
     return;
   }
@@ -132,7 +132,7 @@ var onStartButtonClick = function(e) {
 };
 
 var onBakeButtonClick = function(e) {
-  if(ovenServer == null || !ovenServer.connected) {
+  if(communityMirrorServer == null || !communityMirrorServer.connected) {
     alert('Not connected!');
     return;
   }
