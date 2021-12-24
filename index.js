@@ -7,7 +7,7 @@ var characteristics = {
     password: '13333333-3333-3333-3333-333333330003'
 };
 
-var toppingsEls = document.getElementById('toppings-NONE');
+var toppingsEls = document.getElementById('register');
 var username = document.getElementById('username');
 var password = document.getElementById('password');
 var outputEl = document.getElementById('output');
@@ -108,7 +108,7 @@ var onLoginButtonClick = function(e) {
         alert('Not connected!');
         return;
     }
-    
+
     readyIDReq(getIDReq())
         .then(() => readyUsername(getUsername()))
         .then(() => readyPassword(getPassword()))
