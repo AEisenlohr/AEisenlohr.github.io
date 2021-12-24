@@ -1,153 +1,125 @@
+// var name = 'CommunityMirror'
 var name = 'PizzaSquat';
-var pizzaServiceUuid = '13333333-3333-3333-3333-333333333337';
-var characteristics = { 
-  crust: '13333333-3333-3333-3333-333333330001',
-  toppings: '13333333-3333-3333-3333-333333330002',
-  bake: '13333333-3333-3333-3333-333333330003' 
+var CommunityMirrorServiceUUID = '13333333-3333-3333-3333-333333333337';
+var characteristics = {
+    idrequest: '13333333-3333-3333-3333-333333330001',
+    username: '13333333-3333-3333-3333-333333330002',
+    password: '13333333-3333-3333-3333-333333330003'
 };
-var PizzaBakeResult = {
-  HALF_BAKED: 0,
-  BAKED:      1,
-  CRISPY:     2,
-  BURNT:      3,
-  ON_FIRE:    4
-};
-var crustSelectEl = document.getElementById('crust-type');
-var toppingsEls = document.querySelectorAll('[name=toppings]');
-var ovenTempEl = document.getElementById('oven-temperature');
-var crustTypeEl = document.getElementById('crust-type');
+
+var toppingsEls = document.getElementById('toppings-NONE');
+var username = document.getElementById('username');
+var password = document.getElementById('password');
 var outputEl = document.getElementById('output');
 
-// ¯\_(ツ)_/¯
 function swap16(val) {
-  // le to be
-  return ((val & 0xFF) << 8)
-    | ((val >> 8) & 0xFF);
+    // le to be
+    return ((val & 0xFF) << 8)
+        | ((val >> 8) & 0xFF);
 }
 
 // store characteristics after retrieval
 var cachedCharacteristics = {};
 
 // current bluetooth connection obj
-var ovenServer = null;
+var communityMirrorServer = null;
 
 // connect to bluetooth peripheral
 var readyOven = function() {
-  return navigator.bluetooth.requestDevice({
-    filters: [{ services: [ pizzaServiceUuid ], name: name }]
+    return navigator.bluetooth.requestDevice({
+        filters: [{ services: [ CommunityMirrorServiceUUID ], name: name }]
 
-  }).then(function(device) {
-    return device.gatt.connect();
+    }).then(function(device) {
+        return device.gatt.connect();
 
-  }).then(function(server) {
-    ovenServer = server;
-    return server.getPrimaryService(pizzaServiceUuid);
+    }).then(function(server) {
+        communityMirrorServer = server;
+        return server.getPrimaryService(CommunityMirrorServiceUUID);
 
-  }).then(function(service) {
-    return Promise.all(Object.values(characteristics).map((uuid)=>service.getCharacteristic(uuid)));
+    }).then(function(service) {
+        return Promise.all(Object.values(characteristics).map((uuid)=>service.getCharacteristic(uuid)));
 
-  }).then(function(characteristicObjs) {
-    Object.keys(characteristics).forEach((name, i)=> {
-      cachedCharacteristics[name] = characteristicObjs[i];
+    }).then(function(characteristicObjs) {
+        Object.keys(characteristics).forEach((name, i)=> {
+            cachedCharacteristics[name] = characteristicObjs[i];
+        });
+
+    }).catch(function(err) {
+        alert('communitymirror (bluetooth) error');
+        throw err;
     });
-
-  }).catch(function(err) {
-    alert('oven (bluetooth) error');
-    throw err;
-  });
 };
 
 // characteristic setup
-var readyCrust = function(crustType) {
-  var crust = new Uint8Array(1);
-  crust[0] = crustType;
+var readyIDReq = function(toppings) {
+    var iDReq = new Uint8Array(1);
 
-  var pizzaCrustCharacteristic = cachedCharacteristics['crust'];
-  if(pizzaCrustCharacteristic == null) throw new Error('oven not ready!');
-  return pizzaCrustCharacteristic.writeValue(crust).catch(function(err) {
-    alert('crust error');
-    throw err;
-  });
+    var idRequestCharacteristic = cachedCharacteristics['idrequest'];
+    if(idRequestCharacteristic == null) throw new Error('idrequestcharacteristic not found');
+    return idRequestCharacteristic.writeValue(iDReq).catch(function(err) {
+        alert('idrequest error');
+        throw err;
+    });
 };
 
-var readyToppings = function(toppings) {
-  var toppingsBuff = new Uint8Array(2);
-  toppingsBuff[0] = toppings.concat(0).reduce((a, b)=>a | b);
+var readyUsername = function(username) {
+    var usernameCharacteristic = cachedCharacteristics['username'];
+    if(usernameCharacteristic == null) throw new Error('cant find usernamecharacterisitic!');
 
-  var pizzaToppingsCharacteristic = cachedCharacteristics['toppings'];
-  if(pizzaToppingsCharacteristic == null) throw new Error('oven not ready');
-  return pizzaToppingsCharacteristic.writeValue(toppingsBuff).catch(function(err) {
-    alert('toppings error');
-    throw err;
-  });
+    var tempBuff = new Uint16Array([swap16(username)]);
+    return usernameCharacteristic.writeValue(tempBuff);
 };
 
-var bakePizza = function(temperature) {
-  var pizzaBakeCharacteristic = cachedCharacteristics['bake'];
-  if(pizzaBakeCharacteristic == null) throw new Error('oven not ready!');
+var readyPassword = function(password) {
+    var usernameCharacteristic = cachedCharacteristics['password'];
+    if(usernameCharacteristic == null) throw new Error('cant find passwordcharacterisitic');
 
-  var tempBuff = new Uint16Array([swap16(temperature)]);
-  return pizzaBakeCharacteristic.writeValue(tempBuff).then(function() {
-    result = pizzaBakeCharacteristic.value.getUint8();
-    log('The result is ' + (
-      result == PizzaBakeResult.HALF_BAKED ? 'half baked.' :
-      result == PizzaBakeResult.BAKED ? 'baked.' :
-      result == PizzaBakeResult.CRISPY ? 'crispy.' :
-      result == PizzaBakeResult.BURNT ? 'burnt.' :
-      result == PizzaBakeResult.ON_FIRE ? 'on fire!' : 'unknown?'));
-
-    return result;
-
-  }).catch(function(err) {
-    alert('bake error');
-    throw err;
-  });
+    var tempBuff = new Uint16Array([swap16(password)]);
+    return usernameCharacteristic.writeValue(tempBuff);
 };
 
 // get values from dom
-var getCrustType = function() {
-  return Number(crustSelectEl.value);
+var getIDReq = function() {
+    if (toppingsEls.checked) return 2
+    else return 1
 };
 
-var getToppings = function() {
-  var toppings = [];
-  [].slice.call(toppingsEls).forEach(function(el) {
-    if(el.checked) toppings.push(Number(el.value));
-  });
-  return toppings;
+var getUsername = function() {
+    return username.textContent;
 };
 
-var getOvenTemperature = function() {
-  return ovenTempEl.value;
+var getPassword = function() {
+    return password.textContent;
 };
 
 // button listeners
 var onStartButtonClick = function(e) {
-  if(ovenServer != null && ovenServer.connected) {
-    alert('Already connected...');
-    return;
-  }
-  readyOven().then(function() {
-    alert('Connection successful!');
-  });
+    if(communityMirrorServer != null && communityMirrorServer.connected) {
+        alert('Already connected...');
+        return;
+    }
+    readyOven().then(function() {
+        alert('Connection successful!');
+    });
 };
 
-var onBakeButtonClick = function(e) {
-  if(ovenServer == null || !ovenServer.connected) {
-    alert('Not connected!');
-    return;
-  }
-  readyCrust(getCrustType())
-  .then(() => readyToppings(getToppings()))
-  .then(() => bakePizza(getOvenTemperature()))
+var onLoginButtonClick = function(e) {
+    if(communityMirrorServer == null || !communityMirrorServer.connected) {
+        alert('Not connected!');
+        return;
+    }
+    
+    readyIDReq(getIDReq())
+        .then(() => readyUsername(getUsername()))
+        .then(() => readyPassword(getPassword()))
 };
 
 var log = function(text) {
-  outputEl.textContent = text;
+    outputEl.textContent = text;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  if(navigator.bluetooth) {
-    outputEl.textContent = 'ready.';
-  }
+    if(navigator.bluetooth) {
+        outputEl.textContent = 'ready.';
+    }
 });
