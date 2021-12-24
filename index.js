@@ -32,7 +32,7 @@ var readyOven = function() {
     return device.gatt.connect();
 
   }).then(function(server) {
-    ovenServer = server;
+    communityMirrorServer = server;
     return server.getPrimaryService(communityMirrorServiceUuid);
 
   }).then(function(service) {
@@ -44,7 +44,7 @@ var readyOven = function() {
     });
 
   }).catch(function(err) {
-    alert('oven (bluetooth) error');
+    alert('communitymirror (bluetooth) error');
     throw err;
   });
 };
