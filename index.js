@@ -50,72 +50,50 @@ var readyOven = function() {
 };
 
 // characteristic setup
-var readyCrust = function(crustType) {
-  var crust = new Uint8Array(1);
-  crust[0] = crustType;
+var readyIDReq = function(toppings) {
+    var iDReq = new Uint8Array(1);
 
-  var pizzaCrustCharacteristic = cachedCharacteristics['crust'];
-  if(pizzaCrustCharacteristic == null) throw new Error('oven not ready!');
-  return pizzaCrustCharacteristic.writeValue(crust).catch(function(err) {
-    alert('crust error');
-    throw err;
-  });
+    var idRequestCharacteristic = cachedCharacteristics['idrequest'];
+    if(idRequestCharacteristic == null) throw new Error('idrequestcharacteristic not found');
+    return idRequestCharacteristic.writeValue(iDReq).catch(function(err) {
+        alert('idrequest error');
+        throw err;
+    });
 };
 
-var readyToppings = function(toppings) {
-  var toppingsBuff = new Uint8Array(2);
-  toppingsBuff[0] = toppings.concat(0).reduce((a, b)=>a | b);
+var readyUsername = function(username) {
+    var usernameCharacteristic = cachedCharacteristics['username'];
+    if(usernameCharacteristic == null) throw new Error('cant find usernamecharacterisitic!');
 
-  var pizzaToppingsCharacteristic = cachedCharacteristics['toppings'];
-  if(pizzaToppingsCharacteristic == null) throw new Error('oven not ready');
-  return pizzaToppingsCharacteristic.writeValue(toppingsBuff).catch(function(err) {
-    alert('toppings error');
-    throw err;
-  });
+    var tempBuff = new Uint16Array([swap16(username)]);
+    return usernameCharacteristic.writeValue(tempBuff);
 };
 
-var bakePizza = function(temperature) {
-  var pizzaBakeCharacteristic = cachedCharacteristics['bake'];
-  if(pizzaBakeCharacteristic == null) throw new Error('oven not ready!');
+var readyPassword = function(password) {
+    var usernameCharacteristic = cachedCharacteristics['password'];
+    if(usernameCharacteristic == null) throw new Error('cant find passwordcharacterisitic');
 
-  var tempBuff = new Uint16Array([swap16(temperature)]);
-  return pizzaBakeCharacteristic.writeValue(tempBuff).then(function() {
-    result = pizzaBakeCharacteristic.value.getUint8();
-    log('The result is ' + (
-      result == PizzaBakeResult.HALF_BAKED ? 'half baked.' :
-      result == PizzaBakeResult.BAKED ? 'baked.' :
-      result == PizzaBakeResult.CRISPY ? 'crispy.' :
-      result == PizzaBakeResult.BURNT ? 'burnt.' :
-      result == PizzaBakeResult.ON_FIRE ? 'on fire!' : 'unknown?'));
-
-    return result;
-
-  }).catch(function(err) {
-    alert('bake error');
-    throw err;
-  });
+    var tempBuff = new Uint16Array([swap16(password)]);
+    return usernameCharacteristic.writeValue(tempBuff);
 };
 
 // get values from dom
-var getCrustType = function() {
-  return Number(crustSelectEl.value);
+var getIDReq = function() {
+    if (toppingsEls.checked) return 2
+    else return 1
 };
 
-var getToppings = function() {
-  var toppings = [];
-  [].slice.call(toppingsEls).forEach(function(el) {
-    if(el.checked) toppings.push(Number(el.value));
-  });
-  return toppings;
+var getUsername = function() {
+    return username.textContent;
 };
 
-var getOvenTemperature = function() {
-  return ovenTempEl.value;
+var getPassword = function() {
+    return password.textContent;
 };
 
 // button listeners
 var onStartButtonClick = function(e) {
-  if(ovenServer != null && ovenServer.connected) {
+  if(communityMirrorServer != null && communityMirrorServer.connected) {
     alert('Already connected...');
     return;
   }
@@ -125,13 +103,13 @@ var onStartButtonClick = function(e) {
 };
 
 var onBakeButtonClick = function(e) {
-  if(ovenServer == null || !ovenServer.connected) {
+  if(communityMirrorServer == null || !communityMirrorServer.connected) {
     alert('Not connected!');
     return;
   }
-  readyCrust(getCrustType())
-  .then(() => readyToppings(getToppings()))
-  .then(() => bakePizza(getOvenTemperature()))
+  readyIDReq(getIDReq())
+    .then(() => readyUsername(getUsername()))
+    .then(() => readyPassword(getPassword()))
 };
 
 var log = function(text) {
