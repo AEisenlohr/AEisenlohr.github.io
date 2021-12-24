@@ -78,20 +78,17 @@ var readyPassword = function(password) {
   return usernameCharacteristic.writeValue(tempBuff);
 };
 // get values from dom
-var getCrustType = function() {
-  return Number(crustSelectEl.value);
+var getIDReq = function() {
+  if (toppingsEls.checked) return 2
+  else return 1
 };
 
-var getToppings = function() {
-  var toppings = [];
-  [].slice.call(toppingsEls).forEach(function(el) {
-    if(el.checked) toppings.push(Number(el.value));
-  });
-  return toppings;
+var getUsername = function() {
+  return username.textContent;
 };
 
-var getOvenTemperature = function() {
-  return ovenTempEl.value;
+var getPassword = function() {
+  return password.textContent;
 };
 
 // button listeners
