@@ -1,9 +1,9 @@
 var name = 'PizzaSquat';
 var communityMirrorServiceUUID = '13333333-3333-3333-3333-333333333337';
 var characteristics = { 
-  crust: '13333333-3333-3333-3333-333333330001',
-  toppings: '13333333-3333-3333-3333-333333330002',
-  bake: '13333333-3333-3333-3333-333333330003' 
+  idrequest: '13333333-3333-3333-3333-333333330001',
+  username: '13333333-3333-3333-3333-333333330002',
+  password: '13333333-3333-3333-3333-333333330003'
 };
 var PizzaBakeResult = {
   HALF_BAKED: 0,
@@ -18,7 +18,6 @@ var ovenTempEl = document.getElementById('oven-temperature');
 var crustTypeEl = document.getElementById('crust-type');
 var outputEl = document.getElementById('output');
 
-// ¯\_(ツ)_/¯
 function swap16(val) {
   // le to be
   return ((val & 0xFF) << 8)
@@ -62,7 +61,7 @@ var readyCrust = function(crustType) {
   var crust = new Uint8Array(1);
   crust[0] = crustType;
 
-  var pizzaCrustCharacteristic = cachedCharacteristics['crust'];
+  var pizzaCrustCharacteristic = cachedCharacteristics['idrequest'];
   if(pizzaCrustCharacteristic == null) throw new Error('oven not ready!');
   return pizzaCrustCharacteristic.writeValue(crust).catch(function(err) {
     alert('crust error');
@@ -74,7 +73,7 @@ var readyToppings = function(toppings) {
   var toppingsBuff = new Uint8Array(2);
   toppingsBuff[0] = toppings.concat(0).reduce((a, b)=>a | b);
 
-  var pizzaToppingsCharacteristic = cachedCharacteristics['toppings'];
+  var pizzaToppingsCharacteristic = cachedCharacteristics['username'];
   if(pizzaToppingsCharacteristic == null) throw new Error('oven not ready');
   return pizzaToppingsCharacteristic.writeValue(toppingsBuff).catch(function(err) {
     alert('toppings error');
@@ -83,7 +82,7 @@ var readyToppings = function(toppings) {
 };
 
 var bakePizza = function(temperature) {
-  var pizzaBakeCharacteristic = cachedCharacteristics['bake'];
+  var pizzaBakeCharacteristic = cachedCharacteristics['password'];
   if(pizzaBakeCharacteristic == null) throw new Error('oven not ready!');
 
   var tempBuff = new Uint16Array([swap16(temperature)]);
