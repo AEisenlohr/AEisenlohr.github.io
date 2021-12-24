@@ -25,7 +25,7 @@ var cachedCharacteristics = {};
 var communityMirrorServer = null;
 
 // connect to bluetooth peripheral
-var readyOven = function() {
+var readyCM = function() {
   return navigator.bluetooth.requestDevice({
     filters: [{ services: [ communityMirrorServiceUUID ], name: name }]
 
@@ -97,7 +97,7 @@ var onStartButtonClick = function(e) {
     alert('Already connected...');
     return;
   }
-  readyOven().then(function() {
+  readyCM().then(function() {
     alert('Connection successful!');
   });
 };
