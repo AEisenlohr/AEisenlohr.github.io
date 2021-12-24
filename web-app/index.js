@@ -102,14 +102,15 @@ var onStartButtonClick = function(e) {
   });
 };
 
-var onBakeButtonClick = function(e) {
+var onLoginButtonClick = function(e) {
   if(communityMirrorServer == null || !communityMirrorServer.connected) {
     alert('Not connected!');
     return;
   }
-  readyCrust(getCrustType())
-  .then(() => readyToppings(getToppings()))
-  .then(() => bakePizza(getOvenTemperature()))
+
+  readyIDReq(getIDReq())
+      .then(() => readyUsername(getUsername()))
+      .then(() => readyPassword(getPassword()))
 };
 
 var log = function(text) {
