@@ -108,6 +108,8 @@ var onLoginButtonClick = function(e) {
   readyIDReq(getIDReq())
       .then(() => readyUsername(getUsername()))
       .then(() => readyPassword(getPassword()))
+  var out = new Uint8Array(getUsername())
+  log(out)
 };
 
 var log = function(text) {
