@@ -1,5 +1,5 @@
 var name = 'PizzaSquat';
-var pizzaServiceUuid = '13333333-3333-3333-3333-333333333337';
+var communityMirrorServiceUUID = '13333333-3333-3333-3333-333333333337';
 var characteristics = { 
   crust: '13333333-3333-3333-3333-333333330001',
   toppings: '13333333-3333-3333-3333-333333330002',
@@ -34,14 +34,14 @@ var ovenServer = null;
 // connect to bluetooth peripheral
 var readyOven = function() {
   return navigator.bluetooth.requestDevice({
-    filters: [{ services: [ pizzaServiceUuid ], name: name }]
+    filters: [{ services: [ communityMirrorServiceUUID ], name: name }]
 
   }).then(function(device) {
     return device.gatt.connect();
 
   }).then(function(server) {
     ovenServer = server;
-    return server.getPrimaryService(pizzaServiceUuid);
+    return server.getPrimaryService(communityMirrorServiceUUID);
 
   }).then(function(service) {
     return Promise.all(Object.values(characteristics).map((uuid)=>service.getCharacteristic(uuid)));
