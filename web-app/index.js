@@ -84,21 +84,13 @@ var getIDReq = function() {
 };
 
 var getUsername = function() {
-  user = username.textContent;
-  output = "";
-  for (var i = 0; i < user.length; i++) {
-    output += user[i].charCodeAt(0).toString(2) + " ";
-  }
-  return output;
+  enc = new TextEncoder();
+  return enc.encode(username.textContent);
 };
 
 var getPassword = function() {
-  pass = password.textContent;
-  output = "";
-  for (var i = 0; i < user.length; i++) {
-    output += user[i].charCodeAt(0).toString(2) + " ";
-  }
-  return output;
+  enc = new TextEncoder();
+  return enc.encode(password.textContent);
 };
 
 // button listeners
