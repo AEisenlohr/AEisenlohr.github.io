@@ -5,20 +5,12 @@ var characteristics = {
   username: '13333333-3333-3333-3333-333333330002',
   password: '13333333-3333-3333-3333-333333330003' 
 };
-var PizzaBakeResult = {
-  HALF_BAKED: 0,
-  BAKED:      1,
-  CRISPY:     2,
-  BURNT:      3,
-  ON_FIRE:    4
-};
-var crustSelectEl = document.getElementById('crust-type');
-var toppingsEls = document.querySelectorAll('[name=toppings]');
-var ovenTempEl = document.getElementById('oven-temperature');
-var crustTypeEl = document.getElementById('crust-type');
+
+var toppingsEls = document.getElementById('register');
+var username = document.getElementById('username');
+var password = document.getElementById('password');
 var outputEl = document.getElementById('output');
 
-// ¯\_(ツ)_/¯
 function swap16(val) {
   // le to be
   return ((val & 0xFF) << 8)
@@ -29,7 +21,7 @@ function swap16(val) {
 var cachedCharacteristics = {};
 
 // current bluetooth connection obj
-var ovenServer = null;
+var communityMirrorServer = null;
 
 // connect to bluetooth peripheral
 var readyOven = function() {
