@@ -53,7 +53,6 @@ var readyCM = function() {
 // characteristic setup
 var readyIDReq = function(toppings) {
   var iDReq = new Uint8Array(1);
-  iDReq[0] = toppings;
 
   var idRequestCharacteristic = cachedCharacteristics['idrequest'];
   if(idRequestCharacteristic == null) throw new Error('idrequestcharacteristic not found');
@@ -66,10 +65,9 @@ var readyIDReq = function(toppings) {
 var readyUsername = function(username) {
   var usernameCharacteristic = cachedCharacteristics['username'];
   if(usernameCharacteristic == null) throw new Error('cant find usernamecharacterisitic!');
-  var tempBuff = new Uint8Array(username.length);
-  const encoder = new TextEncoder('utf-8');
-  const temp = encoder.encode(username);
-  return usernameCharacteristic.writeValue(temp);
+
+  var tempBuff = new Uint8Array([swap16('Alex')]);
+  return usernameCharacteristic.writeValue(tempBuff);
 };
 
 var readyPassword = function(password) {
@@ -84,7 +82,6 @@ var getIDReq = function() {
 };
 
 var getUsername = function() {
-  return username.textContent;
 };
 
 var getPassword = function() {
