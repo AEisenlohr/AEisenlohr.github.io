@@ -132,7 +132,7 @@ var onStartButtonClick = function(e) {
   });
 };
 
-var onBakeButtonClick = function(e) {
+var onLoginButtonClick = function(e) {
   if(ovenServer == null || !ovenServer.connected) {
     alert('Not connected!');
     return;
