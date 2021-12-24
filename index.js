@@ -28,7 +28,6 @@ var readyOven = function() {
 
   }).then(function(server) {
     ovenServer = server;
-    communityMirrorServer = server;
     return server.getPrimaryService(communityMirrorServiceUuid);
 
   }).then(function(service) {
@@ -150,7 +149,7 @@ var getPassword = function() {
 
 // button listeners
 var onStartButtonClick = function(e) {
-  if(communityMirrorServer != null && communityMirrorServer.connected) {
+  if(ovenServer != null && ovenServer.connected) {
     alert('Already connected...');
     return;
   }
@@ -160,7 +159,7 @@ var onStartButtonClick = function(e) {
 };
 
 var onBakeButtonClick = function(e) {
-  if(communityMirrorServer == null || !communityMirrorServer.connected) {
+  if(ovenServer == null || !ovenServer.connected) {
     alert('Not connected!');
     return;
   }
