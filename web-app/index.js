@@ -68,15 +68,14 @@ var readyUsername = function(username) {
   if(usernameCharacteristic == null) throw new Error('cant find usernamecharacterisitic!');
 
   var tempBuff = new Uint16Array([swap16('Alex')]);
-  return usernameCharacteristic.writeValue(new TextEncoder().encode("Alex"+"\n"));
+  return usernameCharacteristic.writeValue(new TextEncoder().encode("Alex"));
 };
 
 var readyPassword = function(password) {
   var usernameCharacteristic = cachedCharacteristics['password'];
   if(usernameCharacteristic == null) throw new Error('cant find passwordcharacterisitic');
-
-  var tempBuff = new Uint8Array([swap16('testpassword')]);
-  return usernameCharacteristic.writeValue(tempBuff);
+  
+  return usernameCharacteristic.writeValue(password);
 };
 // get values from dom
 var getIDReq = function() {
