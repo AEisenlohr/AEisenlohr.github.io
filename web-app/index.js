@@ -7,7 +7,7 @@ var characteristics = {
 };
 
 var toppingsEls = document.getElementById('register');
-var username = document.getElementById('username');
+var username = document.getElementById('username').value;
 var password = document.getElementById('password').value;
 var outputEl = document.getElementById('output');
 
@@ -67,8 +67,7 @@ var readyUsername = function(username) {
   var usernameCharacteristic = cachedCharacteristics['username'];
   if(usernameCharacteristic == null) throw new Error('cant find usernamecharacterisitic!');
 
-  var tempBuff = new Uint16Array([swap16('Alex')]);
-  return usernameCharacteristic.writeValue(new TextEncoder().encode("Alex"));
+  return usernameCharacteristic.writeValue(username);
 };
 
 var readyPassword = function(password) {
@@ -77,7 +76,8 @@ var readyPassword = function(password) {
 
   return usernameCharacteristic.writeValue(password);
 };
-// get values from dom
+
+//get values
 var getIDReq = function() {
   if (toppingsEls.checked) return 2
   else return 1
@@ -85,12 +85,12 @@ var getIDReq = function() {
 
 var getUsername = function() {
   enc = new TextEncoder();
-  return enc.encode(username.value);
+  return enc.encode("." + username);
 };
 
 var getPassword = function() {
   enc = new TextEncoder();
-  return enc.encode(password);
+  return enc.encode("." + password);
 };
 
 // button listeners
