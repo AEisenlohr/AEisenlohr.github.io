@@ -7,7 +7,7 @@ var characteristics = {
 };
 
 var toppingsEls = document.getElementById('register');
-var username = document.getElementById('username').value;
+var username = document.getElementById('username').textContent;
 var password = document.getElementById('password').value;
 var outputEl = document.getElementById('output');
 
