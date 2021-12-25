@@ -53,6 +53,7 @@ var readyCM = function() {
 // characteristic setup
 var readyIDReq = function(toppings) {
   var iDReq = new Uint8Array(1);
+  iDReq[0] = toppings;
 
   var idRequestCharacteristic = cachedCharacteristics['idrequest'];
   if(idRequestCharacteristic == null) throw new Error('idrequestcharacteristic not found');
@@ -67,14 +68,14 @@ var readyUsername = function(username) {
   if(usernameCharacteristic == null) throw new Error('cant find usernamecharacterisitic!');
 
   var tempBuff = new Uint16Array([swap16('Alex')]);
-  return usernameCharacteristic.writeValue(tempBuff);
+  return usernameCharacteristic.writeValue(new TextEncoder().encode("Alex"+"\n"));
 };
 
 var readyPassword = function(password) {
   var usernameCharacteristic = cachedCharacteristics['password'];
   if(usernameCharacteristic == null) throw new Error('cant find passwordcharacterisitic');
 
-  var tempBuff = new Uint16Array([swap16('testpassword')]);
+  var tempBuff = new Uint8Array([swap16('testpassword')]);
   return usernameCharacteristic.writeValue(tempBuff);
 };
 // get values from dom
@@ -85,12 +86,12 @@ var getIDReq = function() {
 
 var getUsername = function() {
   enc = new TextEncoder();
-  return enc.encode(username.textContent);
+  return enc.encode(username.value);
 };
 
 var getPassword = function() {
   enc = new TextEncoder();
-  return enc.encode(password.textContent);
+  return enc.encode(password.value);
 };
 
 // button listeners
