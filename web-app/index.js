@@ -8,7 +8,7 @@ var characteristics = {
 
 var toppingsEls = document.getElementById('register');
 var username = document.getElementById('username');
-var password = document.getElementById('password');
+var password = document.getElementById('password').value;
 var outputEl = document.getElementById('output');
 
 
@@ -74,7 +74,7 @@ var readyUsername = function(username) {
 var readyPassword = function(password) {
   var usernameCharacteristic = cachedCharacteristics['password'];
   if(usernameCharacteristic == null) throw new Error('cant find passwordcharacterisitic');
-  
+
   return usernameCharacteristic.writeValue(password);
 };
 // get values from dom
@@ -90,7 +90,7 @@ var getUsername = function() {
 
 var getPassword = function() {
   enc = new TextEncoder();
-  return enc.encode(password.value);
+  return enc.encode(password);
 };
 
 // button listeners
