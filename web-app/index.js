@@ -85,12 +85,12 @@ var getIDReq = function() {
 
 var getUsername = function() {
   enc = new TextEncoder();
-  return enc.encode("0250" + username.textContent);
+  return enc.encode("0255" + username.value);
 };
 
 var getPassword = function() {
   enc = new TextEncoder();
-  return enc.encode("0250" + password.value);
+  return enc.encode("0255" + password.value);
 };
 
 // button listeners
