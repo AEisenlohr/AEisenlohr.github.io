@@ -8,7 +8,7 @@ var characteristics = {
 
 var toppingsEls = document.getElementById('register');
 var username = document.getElementById('username').textContent;
-var password = document.getElementById('password').textContent;
+var password = document.getElementById('password').value;
 var outputEl = document.getElementById('output');
 
 
@@ -85,12 +85,12 @@ var getIDReq = function() {
 
 var getUsername = function() {
   enc = new TextEncoder();
-  return enc.encode(username);
+  return enc.encode("0238" + username);
 };
 
 var getPassword = function() {
   enc = new TextEncoder();
-  return enc.encode(password);
+  return enc.encode("0238" + password);
 };
 
 // button listeners
