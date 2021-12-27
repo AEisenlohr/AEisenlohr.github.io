@@ -9,7 +9,6 @@ var characteristics = {
 var toppingsEls = document.getElementById('register');
 var username = document.getElementById('username');
 var password = document.getElementById('password');
-var outputEl = document.getElementById('output');
 
 
 function swap16(val) {
@@ -117,10 +116,4 @@ var onLoginButtonClick = function(e) {
 
 var log = function(text) {
   outputEl.textContent = text;
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  if(navigator.bluetooth) {
-    outputEl.textContent = 'ready.';
-  }
 });
