@@ -11,13 +11,6 @@ var username = document.getElementById('username');
 var password = document.getElementById('password');
 var outputEl = document.getElementById('output');
 
-
-function swap16(val) {
-  // le to be
-  return ((val & 0xFF) << 8)
-    | ((val >> 8) & 0xFF);
-}
-
 // store characteristics after retrieval
 var cachedCharacteristics = {};
 
