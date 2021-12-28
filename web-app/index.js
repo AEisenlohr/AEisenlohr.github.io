@@ -9,7 +9,6 @@ var characteristics = {
 var toppingsEls = document.getElementById('register');
 var username = document.getElementById('username');
 var password = document.getElementById('password');
-var outputEl = document.getElementById('output');
 
 // store characteristics after retrieval
 var cachedCharacteristics = {};
@@ -106,14 +105,4 @@ var onLoginButtonClick = function(e) {
   readyIDReq(getIDReq())
       .then(() => readyUsername(getUsername()))
       .then(() => readyPassword(getPassword()))
-};
-
-var log = function(text) {
-  outputEl.textContent = text;
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  if(navigator.bluetooth) {
-    outputEl.textContent = 'ready.';
-  }
 });
