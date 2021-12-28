@@ -1,4 +1,4 @@
-var name = 'PizzaSquat';
+var name = 'CommunityMirror';
 var communityMirrorServiceUUID = '13333333-3333-3333-3333-333333333337';
 var characteristics = { 
   idrequest: '13333333-3333-3333-3333-333333330001',
